@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWO Ortsverein Wemding - Gemeinschaft. Engagement. Miteinander.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .awo-red { color: #E6001A; }
+        .bg-awo-red { background-color: #E6001A; }
+        .border-awo-red { border-color: #E6001A; }
+        .hover\:bg-awo-red-dark:hover { background-color: #c00015; }
+
+        .section-title {
+            @apply text-3xl font-extrabold text-slate-900 text-center;
+        }
+        .section-subtitle {
+            @apply mt-4 max-w-3xl mx-auto text-center text-lg text-slate-600;
+        }
+        
+        /* Smoother Animations */
+        .animated-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s cubic-bezier(0.645, 0.045, 0.355, 1), transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+        .animated-item.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Header Scroll Effect */
+        header {
+            transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        header nav {
+            transition: padding-top 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
+        }
+        header.scrolled {
+            @apply bg-white shadow-xl;
+        }
+        header.scrolled nav {
+            @apply py-2;
+        }
+
+        /* Timeline Styling */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            width: 3px;
+            height: 100%;
+            background-color: #e2e8f0;
+        }
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            padding: 20px 40px;
+        }
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            padding-left: 0;
+            padding-right: 50px;
+            text-align: right;
+        }
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            padding-right: 0;
+            padding-left: 50px;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            top: 20px;
+            background-color: white;
+            border: 4px solid #E6001A;
+            border-radius: 50%;
+            z-index: 1;
+            transform: scale(0);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .timeline-item.is-visible::after {
+            transform: scale(1);
+        }
+        .timeline-item:nth-child(even)::after {
+            left: -10px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+    <!-- Header -->
+    <header class="bg-white/95 backdrop-blur-sm sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-3">
+            <a href="#" class="flex items-center space-x-3">
+                <svg class="h-12 w-12 awo-red" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M50 0C22.386 0 0 22.386 0 50s22.386 50 50 50 50-22.386 50-50S77.614 0 50 0zm0 88.235c-21.108 0-38.235-17.127-38.235-38.235S28.892 11.765 50 11.765s38.235 17.127 38.235 38.235-17.127 38.235-38.235 38.235z"/><path d="M50 23.529c-14.612 0-26.47 11.858-26.47 26.471S35.388 76.47 50 76.47s26.47-11.858 26.47-26.47-11.858-26.471-26.47-26.471zm0 41.177c-8.122 0-14.706-6.584-14.706-14.706s6.584-14.706 14.706-14.706 14.706 6.584 14.706 14.706-6.584 14.706-14.706 14.706z"/></svg>
+                <span class="font-bold text-xl text-slate-800">AWO Wemding</span>
+            </a>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#angebote" class="text-slate-600 hover:awo-red transition-colors">Angebote</a>
+                <a href="#ueber-uns" class="text-slate-600 hover:awo-red transition-colors">Über Uns</a>
+                <a href="#geschichte" class="text-slate-600 hover:awo-red transition-colors">Geschichte</a>
+                <a href="#mitmachen" class="bg-awo-red text-white font-bold py-2 px-5 rounded-lg shadow hover:bg-awo-red-dark transition-all">Mitmachen</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="bg-white pt-20 pb-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 animated-item">Eine Säule der Gemeinschaft.</h1>
+                <p class="section-subtitle animated-item" style="transition-delay: 150ms;">
+                    Der AWO Ortsverein Wemding gestaltet seit Jahrzehnten aktiv das soziale Leben in unserer Stadt. Entdecken Sie unsere Angebote, unsere Geschichte und wie Sie Teil unserer starken Gemeinschaft werden können.
+                </p>
+                <div class="mt-10 flex justify-center gap-4 animated-item" style="transition-delay: 300ms;">
+                    <a href="#angebote" class="bg-awo-red text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-awo-red-dark transition-transform transform hover:scale-105">Unsere Angebote entdecken</a>
+                    <a href="#mitmachen" class="bg-slate-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-slate-800 transition-transform transform hover:scale-105">Jetzt Helfer werden</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Angebote Section -->
+        <section id="angebote" class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title animated-item">Was wir für Sie tun</h2>
+                <p class="section-subtitle animated-item" style="transition-delay: 150ms;">
+                    Unsere Programme sind das Herz unserer Arbeit. Sie bringen Menschen zusammen, fördern den Austausch und schaffen unvergessliche Momente. Alle Angebote sind offen für jeden, eine Mitgliedschaft ist nicht erforderlich.
+                </p>
+                <div class="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 animated-item">
+                        <div class="p-8">
+                            <div class="text-4xl mb-4">☕</div>
+                            <h3 class="text-2xl font-bold text-slate-800">Seniorennachmittage</h3>
+                            <p class="mt-3 text-slate-600">Der Treffpunkt für Geselligkeit bei Kaffee und Kuchen. Wir bieten bei Bedarf einen kostenlosen Hol- und Bringservice.</p>
+                            <div class="mt-6 pt-4 border-t border-slate-200 text-sm">
+                                <p><strong>Wann:</strong> Jeden 1. & 3. Dienstag im Monat, 14-16 Uhr</p>
+                                <p><strong>Wo:</strong> Historisches Rathaus Wemding</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 animated-item" style="transition-delay: 150ms;">
+                        <div class="p-8">
+                            <div class="text-4xl mb-4">🛠️</div>
+                            <h3 class="text-2xl font-bold text-slate-800">Repair Café</h3>
+                            <p class="mt-3 text-slate-600">Gemeinsam reparieren statt wegwerfen! Unsere ehrenamtlichen Experten helfen Jung und Alt bei der Reparatur.</p>
+                            <div class="mt-6 pt-4 border-t border-slate-200 text-sm">
+                                <p><strong>Wann:</strong> Jeden 1. Mittwoch im Monat, 14-17 Uhr</p>
+                                <p><strong>Wo:</strong> Grüne Schule (altes Feuerwehrhaus)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 animated-item" style="transition-delay: 300ms;">
+                        <div class="p-8">
+                            <div class="text-4xl mb-4">🚌</div>
+                            <h3 class="text-2xl font-bold text-slate-800">Ausflüge & Feiern</h3>
+                            <p class="mt-3 text-slate-600">Ob Tagesfahrten zu spannenden Zielen oder unsere traditionelle Weihnachtsfeier – wir schaffen gemeinsame Erlebnisse.</p>
+                             <div class="mt-6 pt-4 border-t border-slate-200 text-sm">
+                                <p><strong>Termine:</strong> Werden in den lokalen Medien und auf der Webseite der Stadt bekannt gegeben.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Über Uns Section -->
+        <section id="ueber-uns" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title animated-item">Wer wir sind</h2>
+                <p class="section-subtitle animated-item" style="transition-delay: 150ms;">
+                    Die AWO Wemding ist mehr als nur ein Verein. Wir sind ein starkes Netzwerk, fest verankert in der Region und geleitet von engagierten Menschen aus unserer Mitte.
+                </p>
+                <div class="mt-16 grid md:grid-cols-2 gap-12 items-center">
+                    <div class="animated-item">
+                        <h3 class="text-2xl font-bold text-slate-800">Führung mit Herz</h3>
+                        <p class="mt-4 text-slate-600">An der Spitze unseres Ortsvereins steht unser Vorsitzender <span class="font-semibold awo-red">Carl-Heinz Schmidt</span>. Mit unermüdlichem Einsatz ist er der Motor und das Gesicht unserer lokalen AWO-Arbeit. Sein Engagement garantiert Kontinuität und eine klare Richtung für all unsere Aktivitäten.</p>
+                        <div class="mt-6 bg-slate-100 p-4 rounded-lg">
+                            <h4 class="font-semibold">Kontakt</h4>
+                            <p class="text-sm text-slate-700">Carl-Heinz Schmidt</p>
+                            <p class="text-sm text-slate-700">Tel: 0151-16464145</p>
+                            <p class="text-sm text-slate-700">E-Mail: c.h.schmidt@online.de</p>
+                        </div>
+                    </div>
+                    <div class="animated-item" style="transition-delay: 150ms;">
+                        <h3 class="text-2xl font-bold text-slate-800">Unsere Rolle im Netzwerk</h3>
+                        <p class="mt-4 text-slate-600">Wir agieren nicht allein. Als Ortsverein sind wir die Basis einer großen, bundesweiten Organisation. Dies gibt uns Rückhalt und Stärke.</p>
+                        <div class="mt-6 space-y-4">
+                             <div class="p-4 border-l-4 border-awo-red bg-red-50">
+                                <h4 class="font-bold">Ortsverein Wemding</h4>
+                                <p class="text-sm text-slate-600">Die Basis. Hier findet das soziale Leben statt.</p>
+                            </div>
+                            <div class="p-4 border-l-4 border-slate-400 bg-slate-100">
+                                <h4 class="font-bold">Kreisverband Donau-Ries</h4>
+                                <p class="text-sm text-slate-600">Die regionale Bündelung der Kräfte.</p>
+                            </div>
+                             <div class="p-4 border-l-4 border-slate-400 bg-slate-100">
+                                <h4 class="font-bold">Bezirksverband Schwaben</h4>
+                                <p class="text-sm text-slate-600">Die Vertretung auf Bezirksebene.</p>
+                            </div>
+                             <div class="p-4 border-l-4 border-slate-400 bg-slate-100">
+                                <h4 class="font-bold">Bundesverband</h4>
+                                <p class="text-sm text-slate-600">Die bundesweite Dachorganisation.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Geschichte Section -->
+        <section id="geschichte" class="py-20">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title animated-item">Unsere Wurzeln</h2>
+                <p class="section-subtitle animated-item" style="transition-delay: 150ms;">
+                    Unsere Arbeit steht auf einem soliden historischen Fundament. Seit über 50 Jahren sind wir Teil der regionalen Geschichte und setzen uns für die Werte der AWO ein.
+                </p>
+                <div class="mt-16 relative timeline">
+                    <div class="timeline-item animated-item">
+                        <h3 class="font-bold text-xl awo-red">1919</h3>
+                        <p class="mt-2 text-slate-600">Marie Juchacz gründet die Arbeiterwohlfahrt in Berlin als Selbsthilfeorganisation der Arbeiterbewegung.</p>
+                    </div>
+                    <div class="timeline-item animated-item" style="transition-delay: 200ms;">
+                         <h3 class="font-bold text-xl awo-red">1972</h3>
+                        <p class="mt-2 text-slate-600">Im Zuge der Gebietsreform entsteht der AWO Kreisverband Donau-Ries. Der Ortsverein Wemding ist von Anfang an als Gründungsmitglied dabei.</p>
+                    </div>
+                    <div class="timeline-item animated-item" style="transition-delay: 200ms;">
+                        <h3 class="font-bold text-xl awo-red">Heute</h3>
+                        <p class="mt-2 text-slate-600">Der AWO Ortsverein Wemding ist eine aktive, von Freiwilligen getragene Säule des sozialen Lebens in der Stadt, mit klarem Fokus und innovativen Projekten.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mitmachen Section -->
+        <section id="mitmachen" class="py-20 bg-slate-800 text-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl font-extrabold animated-item">Werden Sie Teil unserer Bewegung!</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-300 animated-item" style="transition-delay: 150ms;">
+                    Ob durch eine Mitgliedschaft oder ehrenamtliches Engagement – Ihre Unterstützung macht den Unterschied. Helfen Sie uns, Wemding noch sozialer und lebenswerter zu machen.
+                </p>
+                <div class="mt-12 grid sm:grid-cols-2 gap-8">
+                    <div class="bg-slate-700 p-8 rounded-xl animated-item">
+                        <h3 class="text-2xl font-bold">Mitglied werden</h3>
+                        <p class="mt-3 text-slate-300">Ihre Mitgliedschaft ist ein starkes Zeichen der Solidarität. Mit einem kleinen Beitrag unterstützen Sie unsere gesamte Arbeit nachhaltig.</p>
+                        <a href="https://www.awo.org/mitglied-werden" target="_blank" class="mt-6 inline-block bg-awo-red text-white font-bold py-3 px-6 rounded-lg shadow hover:bg-awo-red-dark transition-all">Jetzt Mitgliedsantrag stellen</a>
+                    </div>
+                    <div class="bg-slate-700 p-8 rounded-xl animated-item" style="transition-delay: 150ms;">
+                        <h3 class="text-2xl font-bold">Ehrenamtlich helfen</h3>
+                        <p class="mt-3 text-slate-300">Ihre Zeit und Ihre Talente sind unbezahlbar. Ob im Repair Café, bei den Seniorennachmittagen oder bei Ausflügen – wir freuen uns auf Sie!</p>
+                        <a href="mailto:c.h.schmidt@online.de?subject=Interesse an ehrenamtlicher Mithilfe bei der AWO Wemding" class="mt-6 inline-block bg-white text-slate-800 font-bold py-3 px-6 rounded-lg shadow hover:bg-slate-200 transition-all">Kontakt aufnehmen</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="font-bold text-white">AWO Ortsverein Wemding e.V.</p>
+            <p class="text-sm mt-2">Ein Teil der Gemeinschaft. Für die Gemeinschaft.</p>
+            <div class="mt-6 text-sm">
+                <p>Vorsitzender: Carl-Heinz Schmidt</p>
+                <p>Georg-Friedrich-Händel-Str. 4, 86650 Wemding</p>
+            </div>
+            <p class="mt-8 text-xs text-slate-500">&copy; 2025 AWO Ortsverein Wemding. Alle Rechte vorbehalten.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Header scroll effect
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Animation on scroll
+            const animatedItems = document.querySelectorAll('.animated-item');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            animatedItems.forEach(item => {
+                observer.observe(item);
+            });
+        });
+    </script>
+</body>
+</html>
