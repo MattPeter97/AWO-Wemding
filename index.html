@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.1/css/all.css">
     <style>
         :root {
             /* Light Theme - AWO Red */
@@ -264,7 +264,6 @@
 </head>
 <body class="pb-24 md:pb-0">
 
-    <!-- Desktop Header -->
     <header class="hidden md:block fixed top-0 left-0 right-0 z-40 bg-theme-background/80 backdrop-blur-lg">
         <nav id="desktop-nav" class="max-w-7xl mx-auto px-8 flex justify-between items-center h-20">
             <a href="#" class="flex items-center space-x-3">
@@ -276,7 +275,6 @@
         </nav>
     </header>
 
-    <!-- Mobile Nav -->
     <nav id="mobile-nav" role="navigation" aria-label="Hauptnavigation" class="md:hidden fixed bottom-0 left-0 right-0 z-40 h-20 flex justify-around items-center">
         <a href="#angebote" class="nav-item flex-1 h-full flex flex-col items-center justify-center relative" aria-label="Angebote">
             <span class="bubble"></span>
@@ -296,7 +294,6 @@
     </nav>
 
     <main class="pt-16 md:pt-20">
-        <!-- Hero Section -->
         <section class="bg-theme-surface-low pt-8 md:pt-12 pb-16 md:pb-24">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h1 class="text-display-large animated-item" style="color: var(--theme-primary);">Eine Säule der Gemeinschaft.</h1>
@@ -309,7 +306,6 @@
             </div>
         </section>
 
-        <!-- Angebote Section -->
         <section id="angebote" class="py-16 md:py-24">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-headline-large text-center animated-item">Was wir für Sie tun</h2>
@@ -333,17 +329,14 @@
             </div>
         </section>
 
-        <!-- Werte Section -->
         <section id="werte" class="py-16 md:py-24 bg-theme-surface-container-low">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-headline-large text-center animated-item">Unsere Werte</h2>
                 <div id="werte-container" class="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 text-center">
-                    <!-- Werte werden hier dynamisch eingefügt -->
-                </div>
+                    </div>
             </div>
         </section>
 
-        <!-- Mitmachen Section -->
         <section id="mitmachen" class="py-16 md:py-24">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h2 class="text-headline-large animated-item">Werden Sie Teil unserer Bewegung!</h2>
@@ -363,7 +356,6 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="bg-theme-surface-container-highest text-on-surface-variant py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p class="font-bold text-on-surface text-lg">AWO Ortsverein Wemding e.V.</p>
@@ -379,7 +371,6 @@
         </div>
     </footer>
 
-    <!-- Modals -->
     <div id="generic-modal-overlay" class="hidden modal-overlay fixed inset-0 z-50 p-4 flex items-center justify-center"></div>
 
     <script>
@@ -419,21 +410,15 @@
                         const id = entry.target.getAttribute('id');
                         
                         desktopNavItems.forEach(item => {
-                             if (item.getAttribute('href') === `#${id}`) {
-                                item.classList.add('active');
-                            } else {
-                                item.classList.remove('active');
-                            }
+                             const isActive = item.getAttribute('href') === `#${id}`;
+                             item.classList.toggle('active', isActive);
                         });
-
+                        
+                        // ✅ IMPROVEMENT: Simplified ARIA attribute handling
                         mobileNavItems.forEach(item => {
-                            if (item.getAttribute('href') === `#${id}`) {
-                                item.classList.add('active');
-                                item.setAttribute('aria-current', 'page');
-                            } else {
-                                item.classList.remove('active');
-                                item.removeAttribute('aria-current');
-                            }
+                            const isActive = item.getAttribute('href') === `#${id}`;
+                            item.classList.toggle('active', isActive);
+                            item.setAttribute('aria-current', isActive ? 'page' : 'false');
                         });
                     }
                 });
@@ -450,6 +435,7 @@
 
             // --- Modal Logic ---
             const modalOverlay = document.getElementById('generic-modal-overlay');
+            let trapFocusListener = null;
 
             const openModal = (content, callback) => {
                 modalOverlay.innerHTML = content;
@@ -460,6 +446,33 @@
                     if (modalContent) {
                         modalContent.style.transform = 'scale(1)';
                         modalContent.style.opacity = '1';
+
+                        // ✅ IMPROVEMENT: Enhanced Modal Accessibility with Focus Trapping
+                        const focusableElements = modalContent.querySelectorAll(
+                            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                        );
+                        const firstFocusableElement = focusableElements[0];
+                        const lastFocusableElement = focusableElements[focusableElements.length - 1];
+
+                        firstFocusableElement?.focus();
+
+                        trapFocusListener = (e) => {
+                            const isTabPressed = e.key === 'Tab' || e.keyCode === 9;
+                            if (!isTabPressed) return;
+
+                            if (e.shiftKey) { // Shift + Tab
+                                if (document.activeElement === firstFocusableElement) {
+                                    lastFocusableElement.focus();
+                                    e.preventDefault();
+                                }
+                            } else { // Tab
+                                if (document.activeElement === lastFocusableElement) {
+                                    firstFocusableElement.focus();
+                                    e.preventDefault();
+                                }
+                            }
+                        };
+                        modalOverlay.addEventListener('keydown', trapFocusListener);
                     }
                 }, 20);
                 document.body.style.overflow = 'hidden';
@@ -472,6 +485,10 @@
             };
 
             const closeModal = (overlay) => {
+                if (trapFocusListener) {
+                    overlay.removeEventListener('keydown', trapFocusListener);
+                    trapFocusListener = null;
+                }
                 overlay.style.opacity = '0';
                 const modalContent = overlay.querySelector('.modal-content');
                 if (modalContent) {
