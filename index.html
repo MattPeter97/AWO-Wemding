@@ -93,16 +93,12 @@
             }
         }
         
-        /* DESKTOP-FIRST STYLING */
         body {
             font-family: 'Roboto Flex', sans-serif;
             background-color: var(--theme-background);
             color: var(--theme-on-surface-variant);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            /* Default padding for LEFT navigation (desktop) */
-            padding-left: 5rem;
-            padding-bottom: 0;
         }
         
         h1, h2, h3, h4, h5, h6 { color: var(--theme-on-surface); font-weight: 700; }
@@ -129,7 +125,6 @@
             position: fixed;
             z-index: 50;
             display: flex;
-            /* Desktop styles */
             flex-direction: column;
             justify-content: flex-start;
             top: 0;
@@ -137,7 +132,7 @@
             left: 0;
             width: 5rem;
             border-right: 1px solid var(--theme-outline);
-            padding-top: 5rem; /* Space for header */
+            padding-top: 5rem;
         }
 
         .nav-item {
@@ -150,7 +145,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            /* Desktop styles */
             flex-direction: column;
             width: 100%;
             height: 5rem;
@@ -163,7 +157,6 @@
             transition: transform 0.2s;
             z-index: 0;
             pointer-events: none;
-            /* Desktop bubble style */
             width: 32px;
             height: 48px;
             top: 50%;
@@ -178,10 +171,6 @@
 
         /* Media query now switches to BOTTOM navigation for smaller screens */
         @media (max-width: 1023px) {
-            body {
-                padding-left: 0;
-                padding-bottom: 5rem;
-            }
             #main-nav {
                 flex-direction: row;
                 justify-content: space-around;
@@ -219,9 +208,9 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body>
+<body class="pb-20 lg:pb-0 lg:pl-20">
 
-    <header class="fixed top-0 left-0 right-0 z-40 bg-theme-background/80 backdrop-blur-lg h-20">
+    <header class="fixed top-0 right-0 z-40 bg-theme-background/80 backdrop-blur-lg h-20 left-0 lg:left-20">
         <div class="w-full h-full flex justify-center items-center">
             <a href="#" class="flex flex-col items-center justify-center text-center">
                  <svg class="h-12 w-12 text-[var(--theme-primary)]" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
