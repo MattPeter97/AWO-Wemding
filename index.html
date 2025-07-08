@@ -99,7 +99,7 @@
             color: var(--theme-on-surface-variant);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            padding-bottom: 5rem; /* Space for the bottom nav bar */
+            padding-bottom: 5rem;
         }
         
         h1, h2, h3, h4, h5, h6 { color: var(--theme-on-surface); font-weight: 700; }
@@ -109,11 +109,11 @@
         .text-body-large { font-size: 1rem; line-height: 1.5rem; font-weight: 400; }
         .text-label-large { font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; }
 
-        .m3-card { background-color: var(--theme-surface-container-low); border-radius: 12px; padding: 1rem; box-shadow: 0 1px 2px rgba(0,0,0,0.1); transition: all 0.2s ease-out; }
+        .m3-card { background-color: var(--theme-surface-container-low); border-radius: 12px; padding: 1rem; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
         .m3-card--filled { background-color: var(--theme-primary-container); box-shadow: none; }
         .m3-card--outlined { background-color: var(--theme-surface); border: 1px solid var(--theme-outline); box-shadow: none; }
         
-        .m3-button { border-radius: 9999px; padding: 0.625rem 1.5rem; font-weight: 500; transition: all 0.2s ease-out; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }
+        .m3-button { border-radius: 9999px; padding: 0.625rem 1.5rem; font-weight: 500; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }
         .m3-button--filled { background-color: var(--theme-primary); color: var(--theme-on-primary); }
         .m3-button--filled:hover { box-shadow: 0 1px 2px rgba(0,0,0,0.3); }
         .m3-button--outlined { border: 1px solid var(--theme-outline); color: var(--theme-primary); }
@@ -136,7 +136,6 @@
 
         .nav-item {
             color: var(--theme-on-surface-variant);
-            transition: color 0.2s;
             font-weight: 500;
             text-align: center;
             cursor: pointer;
@@ -147,13 +146,13 @@
             flex-direction: column;
             flex-grow: 1;
             height: 100%;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .nav-item .bubble {
             background-color: var(--theme-secondary-container);
             border-radius: 16px;
             position: absolute;
-            transition: transform 0.2s ease-in-out;
             z-index: 0;
             pointer-events: none;
             width: 48px;
@@ -161,34 +160,62 @@
             top: 12px;
             left: 50%;
             transform: translateX(-50%) scale(0);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        .nav-item.active .bubble {
-            transform: translateX(-50%) scale(1);
+        .nav-item.active .bubble { transform: translateX(-50%) scale(1); }
+        .nav-item.active { color: var(--theme-on-secondary-container); }
+        .nav-item i, .nav-item span { position: relative; z-index: 1; }
+        .nav-item span { font-size: 0.75rem; margin-top: 0.25rem; }
+
+        /* ✅ MODIFICATION: Expressive Animations */
+        .animated-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        .nav-item.active {
-            color: var(--theme-on-secondary-container);
+        .animated-item.is-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
-        
-        .nav-item i, .nav-item span {
+
+        /* Timeline Styles */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background-color: var(--theme-primary-container);
+        }
+        .timeline-item {
             position: relative;
-            z-index: 1;
+            width: 100%;
+            padding-left: calc(50% + 30px);
+            padding-right: 30px;
+            margin-bottom: 50px;
         }
-
-        .nav-item span {
-            font-size: 0.75rem;
-            margin-top: 0.25rem;
+        .timeline-item:nth-child(odd) {
+            padding-left: 30px;
+            padding-right: calc(50% + 30px);
+            text-align: right;
         }
-
-        .modal-overlay { background-color: rgba(0,0,0,0.4); transition: opacity 0.3s ease; }
-        .modal-content { background-color: var(--theme-surface-container-low); border-radius: 28px; transition: transform 0.3s ease, opacity 0.3s ease; max-height: 90vh; overflow-y: auto; }
-        
-        .animated-item { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
-        .animated-item.is-visible { opacity: 1; transform: translateY(0); }
-        
-        .loader { border: 4px solid var(--theme-surface-variant); border-top: 4px solid var(--theme-primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .timeline-dot {
+            height: 21px;
+            width: 21px;
+            background-color: var(--theme-primary);
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 3px solid var(--theme-primary-container);
+        }
+        .timeline-item:nth-child(odd) .timeline-content {
+            align-items: flex-end;
+        }
     </style>
 </head>
 <body>
@@ -206,6 +233,7 @@
     <nav id="main-nav" role="navigation" aria-label="Hauptnavigation">
         <a href="#angebote" class="nav-item" aria-label="Angebote"><span class="bubble"></span><i class="fa-solid fa-hand-holding-heart text-xl"></i><span class="text-label-large">Angebote</span></a>
         <a href="#werte" class="nav-item" aria-label="Werte"><span class="bubble"></span><i class="fa-solid fa-heart text-xl"></i><span class="text-label-large">Werte</span></a>
+        <a href="#geschichte" class="nav-item" aria-label="Geschichte"><span class="bubble"></span><i class="fa-solid fa-timeline text-xl"></i><span class="text-label-large">Geschichte</span></a>
         <a href="#mitmachen" class="nav-item" aria-label="Mitmachen"><span class="bubble"></span><i class="fa-solid fa-users text-xl"></i><span class="text-label-large">Mitmachen</span></a>
     </nav>
 
@@ -252,8 +280,58 @@
                 </div>
             </div>
         </section>
+        
+        <section id="geschichte" class="py-16 md:py-24">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-headline-large text-center mb-16 animated-item">Über 100 Jahre Geschichte</h2>
+                <div class="relative timeline">
+                    <div class="timeline-item animated-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content flex flex-col">
+                            <h3 class="text-title-large font-medium">1919</h3>
+                            <p class="text-body-large mt-1">Gründung des Hauptausschusses für Arbeiterwohlfahrt durch Marie Juchacz in der SPD.</p>
+                        </div>
+                    </div>
+                     <div class="timeline-item animated-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content flex flex-col">
+                            <h3 class="text-title-large font-medium">1933</h3>
+                            <p class="text-body-large mt-1">Die AWO wird von den Nationalsozialisten verboten und aufgelöst.</p>
+                        </div>
+                    </div>
+                     <div class="timeline-item animated-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content flex flex-col">
+                            <h3 class="text-title-large font-medium">1946</h3>
+                            <p class="text-body-large mt-1">Wiedergründung des Hauptausschusses für Arbeiterwohlfahrt in Hannover nach dem Krieg.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item animated-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content flex flex-col">
+                            <h3 class="text-title-large font-medium">1970er</h3>
+                            <p class="text-body-large mt-1">Gründung der "Mobilen Sozialen Hilfsdienste", die eine häusliche Versorgung ermöglichen.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item animated-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content flex flex-col">
+                            <h3 class="text-title-large font-medium">1989</h3>
+                            <p class="text-body-large mt-1">Nach dem Fall der Berliner Mauer engagiert sich die AWO stark beim Aufbau sozialer Strukturen in den neuen Bundesländern.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item animated-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content flex flex-col">
+                            <h3 class="text-title-large font-medium">Heute</h3>
+                            <p class="text-body-large mt-1">Die AWO ist einer der größten Spitzenverbände der Freien Wohlfahrtspflege in Deutschland mit tausenden Einrichtungen und Diensten.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <section id="mitmachen" class="py-16 md:py-24">
+        <section id="mitmachen" class="py-16 md:py-24 bg-theme-surface-container-low">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h2 class="text-headline-large animated-item">Werden Sie Teil unserer Bewegung!</h2>
                 <div class="mt-12 grid md:grid-cols-2 gap-4 text-left">
