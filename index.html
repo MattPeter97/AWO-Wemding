@@ -168,6 +168,31 @@
         .nav-item i, .nav-item span { position: relative; z-index: 1; }
         .nav-item span { font-size: 0.75rem; margin-top: 0.25rem; }
 
+        /* ✅ MODIFICATION: New simplified modal styles */
+        .modal-overlay {
+            background-color: rgba(0,0,0,0.4);
+            transition: opacity 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .modal-overlay.is-open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background-color: var(--theme-surface-container-low);
+            border-radius: 28px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.95);
+            opacity: 0;
+        }
+        .modal-overlay.is-open .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
         .animated-item {
             opacity: 0;
             transform: translateY(30px);
@@ -178,7 +203,6 @@
             transform: translateY(0);
         }
 
-        /* Timeline Styles */
         .timeline::before {
             content: '';
             position: absolute;
@@ -364,7 +388,7 @@
         </div>
     </footer>
 
-    <div id="generic-modal-overlay" class="hidden modal-overlay fixed inset-0 z-50 p-4 flex items-center justify-center"></div>
+    <div id="generic-modal-overlay" class="modal-overlay fixed inset-0 z-50 p-4 flex items-center justify-center" aria-modal="true" role="dialog"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -408,44 +432,34 @@
             sections.forEach(section => observer.observe(section));
             animatedItems.forEach(item => observer.observe(item));
 
+            // ✅ MODIFICATION: New simplified modal script
             const modalOverlay = document.getElementById('generic-modal-overlay');
-            let trapFocusListener = null;
-            const openModal = (content, callback) => {
+
+            function openModal(content, onOpenCallback) {
                 modalOverlay.innerHTML = content;
-                modalOverlay.classList.remove('hidden');
-                setTimeout(() => {
-                    modalOverlay.style.opacity = '1';
-                    const modalContent = modalOverlay.querySelector('.modal-content');
-                    if (modalContent) {
-                        modalContent.style.transform = 'scale(1)';
-                        modalContent.style.opacity = '1';
-                        const focusableElements = modalContent.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-                        const firstFocusableElement = focusableElements[0];
-                        const lastFocusableElement = focusableElements[focusableElements.length - 1];
-                        firstFocusableElement?.focus();
-                        trapFocusListener = (e) => {
-                            const isTabPressed = e.key === 'Tab' || e.keyCode === 9;
-                            if (!isTabPressed) return;
-                            if (e.shiftKey) { if (document.activeElement === firstFocusableElement) { lastFocusableElement.focus(); e.preventDefault(); } }
-                            else { if (document.activeElement === lastFocusableElement) { firstFocusableElement.focus(); e.preventDefault(); } }
-                        };
-                        modalOverlay.addEventListener('keydown', trapFocusListener);
-                    }
-                }, 20);
+                modalOverlay.classList.add('is-open');
                 document.body.style.overflow = 'hidden';
-                modalOverlay.querySelector('.close-modal').addEventListener('click', () => closeModal(modalOverlay));
-                if (callback) { callback(modalOverlay); }
-            };
 
-            const closeModal = (overlay) => {
-                if (trapFocusListener) { overlay.removeEventListener('keydown', trapFocusListener); trapFocusListener = null; }
-                overlay.style.opacity = '0';
-                const modalContent = overlay.querySelector('.modal-content');
-                if (modalContent) { modalContent.style.transform = 'scale(0.95)'; modalContent.style.opacity = '0'; }
-                overlay.addEventListener('transitionend', () => { overlay.classList.add('hidden'); document.body.style.overflow = ''; }, { once: true });
-            };
+                const closeButton = modalOverlay.querySelector('.close-modal');
+                if (closeButton) {
+                    closeButton.addEventListener('click', closeModal, { once: true });
+                }
 
-            modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(modalOverlay); });
+                if (onOpenCallback) {
+                    onOpenCallback(modalOverlay);
+                }
+            }
+
+            function closeModal() {
+                modalOverlay.classList.remove('is-open');
+                document.body.style.overflow = '';
+            }
+
+            modalOverlay.addEventListener('click', (event) => {
+                if (event.target === modalOverlay) {
+                    closeModal();
+                }
+            });
             
             const attachIcsListeners = (modal) => {
                  modal.querySelectorAll('.download-ics-link').forEach(link => {
