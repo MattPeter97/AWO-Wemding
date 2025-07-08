@@ -99,6 +99,7 @@
             color: var(--theme-on-surface-variant);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            padding-bottom: 5rem; /* Space for the bottom nav bar */
         }
         
         h1, h2, h3, h4, h5, h6 { color: var(--theme-on-surface); font-weight: 700; }
@@ -118,16 +119,13 @@
         .m3-button--outlined { border: 1px solid var(--theme-outline); color: var(--theme-primary); }
         .m3-button--text { color: var(--theme-primary); }
         
-        /* MOBILE-FIRST NAVIGATION STYLES */
-        
-        /* Default: Mobile Bottom Nav */
+        /* Bottom Navigation Bar Styles */
         #main-nav {
             background-color: var(--theme-surface-container-highest);
             box-shadow: 0 -1px 3px rgba(0,0,0,0.1);
             position: fixed;
             z-index: 50;
             display: flex;
-            flex-direction: row;
             justify-content: space-around;
             align-items: center;
             bottom: 0;
@@ -151,48 +149,39 @@
             flex-grow: 1;
             height: 100%;
         }
+
+        .nav-item .bubble {
+            background-color: var(--theme-secondary-container);
+            border-radius: 16px;
+            position: absolute;
+            transition: transform 0.2s ease-in-out;
+            z-index: 0;
+            pointer-events: none;
+            width: 48px;
+            height: 32px;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+        }
+
+        .nav-item.active .bubble {
+            transform: translateX(-50%) scale(1);
+        }
         
         .nav-item.active {
-            color: var(--theme-primary);
+            color: var(--theme-on-secondary-container);
+        }
+        
+        .nav-item i, .nav-item span {
+            position: relative;
+            z-index: 1;
         }
 
-        .nav-item i { transition: transform 0.2s ease; }
-        .nav-item.active i { transform: scale(1.1); }
-        .nav-item span { font-size: 0.75rem; margin-top: 0.25rem; }
-
-        /* Overrides for Desktop (Left-side Nav Rail) */
-        @media (min-width: 1024px) {
-            #main-nav {
-                flex-direction: column;
-                justify-content: flex-start;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                width: 5rem;
-                height: 100%;
-                border-right: 1px solid var(--theme-outline);
-                border-top: none;
-                padding-top: 5rem;
-                align-items: center;
-                gap: 0.5rem;
-            }
-            .nav-item {
-                flex-grow: 0;
-                height: 5rem;
-                width: calc(100% - 1rem);
-                border-radius: 9999px;
-            }
-
-            .nav-item:hover {
-                 background-color: var(--theme-surface-container-low);
-            }
-            
-            .nav-item.active {
-                background-color: var(--theme-secondary-container);
-                color: var(--theme-on-secondary-container);
-            }
+        .nav-item span {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
         }
-
+        
         .modal-overlay { background-color: rgba(0,0,0,0.4); transition: opacity 0.3s ease; }
         .modal-content { background-color: var(--theme-surface-container-low); border-radius: 28px; transition: transform 0.3s ease, opacity 0.3s ease; max-height: 90vh; overflow-y: auto; }
         
@@ -203,9 +192,9 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="pb-20 lg:pb-0 lg:pl-20">
+<body>
 
-    <header class="fixed top-0 right-0 z-40 bg-theme-background/80 backdrop-blur-lg h-20 left-0 lg:left-20">
+    <header class="fixed top-0 left-0 right-0 z-40 bg-theme-background/80 backdrop-blur-lg h-20">
         <div class="w-full h-full flex justify-center items-center">
             <a href="#" class="flex flex-col items-center justify-center text-center">
                  <svg class="h-12 w-12 text-[var(--theme-primary)]" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
@@ -216,9 +205,9 @@
     </header>
 
     <nav id="main-nav" role="navigation" aria-label="Hauptnavigation">
-        <a href="#angebote" class="nav-item" aria-label="Angebote"><i class="fa-solid fa-hand-holding-heart text-xl"></i><span class="text-label-large">Angebote</span></a>
-        <a href="#werte" class="nav-item" aria-label="Werte"><i class="fa-solid fa-heart text-xl"></i><span class="text-label-large">Werte</span></a>
-        <a href="#mitmachen" class="nav-item" aria-label="Mitmachen"><i class="fa-solid fa-users text-xl"></i><span class="text-label-large">Mitmachen</span></a>
+        <a href="#angebote" class="nav-item" aria-label="Angebote"><span class="bubble"></span><i class="fa-solid fa-hand-holding-heart text-xl"></i><span class="text-label-large">Angebote</span></a>
+        <a href="#werte" class="nav-item" aria-label="Werte"><span class="bubble"></span><i class="fa-solid fa-heart text-xl"></i><span class="text-label-large">Werte</span></a>
+        <a href="#mitmachen" class="nav-item" aria-label="Mitmachen"><span class="bubble"></span><i class="fa-solid fa-users text-xl"></i><span class="text-label-large">Mitmachen</span></a>
     </nav>
 
     <main class="pt-24">
